@@ -1,7 +1,9 @@
 var http = require("http");
-var needle = require("needle");
-var moment = require('moment');
 var url = require('url');
+
+var request = require("request");
+var moment = require('moment');
+var addDescription = require('./addDescription');
 
 var server = http.createServer(function (req, res) {
 
@@ -14,26 +16,20 @@ var server = http.createServer(function (req, res) {
     p: query.password,  // Password
   };
 
-  needle.post("https://www.campus.rwth-aachen.de/office/views/campus/redirect.asp", data, {}, function (error, response) {
+  // Create a new cookie jar for each request
+  request = request.defaults({ jar: request.jar() });
 
-    var cookies = response.headers['set-cookie'];
-    cookies.forEach(function (item) {
-
-      // Because the server send some metadata we only need the first part of each Cookie.
-      loginCookies.push(item.split(";")[0]);
-
-    });
-
-    var options = {headers: {Cookie: loginCookies.join(";")}}; // Add the cookies to the header
-
+  request.post("https://www.campus.rwth-aachen.de/office/views/campus/redirect.asp", { form: data }, function (error, response) {
     var start = moment().subtract(1, 'Month').format('DD.MM.YYYY');
     var end   = moment().add(8, 'Month').format('DD.MM.YYYY');
 
-    needle.get('https://www.campus.rwth-aachen.de/office/views/calendar/iCalExport.asp?startdt='+start+'&enddt='+end+'%2023:59:59', options, function (error, response) {
-      res.header('Content-Type', 'text/calendar; charset=UTF-8'); // Set correct Content-Type
-      res.header('X-PUBLISHED-TTL', 'PT1H'); // Set update interval to 1h (Exchange MS)
-      res.header('REFRESH-INTERVAL', 'PT1H'); // Offical Spec
-      res.write(response.body);
+    request.get('https://www.campus.rwth-aachen.de/office/views/calendar/iCalExport.asp?startdt='+start+'&enddt='+end+'%2023:59:59', function (error, response) {
+      res.setHeader('Content-Type', 'text/calendar; charset=UTF-8'); // Set correct Content-Type
+      res.setHeader('X-PUBLISHED-TTL', 'PT1H'); // Set update interval to 1h (Exchange MS)
+      res.setHeader('REFRESH-INTERVAL', 'PT1H'); // Offical Spec
+      res.setHeader('Content-Disposition', response.headers['content-disposition']);
+      var ics = addDescription(response.body);
+      res.write(ics);
       res.end();
     });
 

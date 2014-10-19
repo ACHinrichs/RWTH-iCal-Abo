@@ -6,13 +6,14 @@
   "scripts": {
     "start": "node server.js"
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/flashspys/RWTH-iCal-Abo"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flashspys/RWTH-iCal-Abo"
   },
   "license": "MIT",
   "dependencies": {
     "moment": "^2.8.3",
-    "needle": "^0.7.10"
+    "request": "^2.45.0",
+    "tough-cookie": "^0.12.1"
   }
 }
