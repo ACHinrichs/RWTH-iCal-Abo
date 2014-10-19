@@ -10,11 +10,13 @@ var server = http.createServer(function (req, res) {
   var loginCookies = [];
   var query = url.parse(req.url, true).query;
 
-  // Required arguments for login
-  var data = {
-    u: query.user,      // Username
-    p: query.password,  // Password
-  };
+  if (!!query.user && !!query.password) {
+
+    // Required arguments for login
+    var data = {
+      u: query.user,      // Username
+      p: query.password,  // Password
+    };
 
   // Create a new cookie jar for each request
   request = request.defaults({ jar: request.jar() });
@@ -32,8 +34,12 @@ var server = http.createServer(function (req, res) {
       res.write(ics);
       res.end();
     });
-
   });
+
+  } else {
+    res.end('Du hast die Parameter user und/oder password vergessen.');
+  }
+
 });
 
 server.listen(2014);
