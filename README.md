@@ -13,7 +13,7 @@ Benötigt ist ein NodeJS-Server. Zudem erfordert es das Plugin 'needle' welches 
 Es muss eine datei ```config.js``` mit den erforderlichen Nutzerdaten (Matrikelnummer und Passwort) für das CampusOffice vorhanden sein. Die datei ```config.dummy.js``` zeigt den Aufbau.
 
 <aside class="notice">
-ACHTUNG! Auch wenn eine Serverseitige Configurationsdatei sicherer ist, als eine unverschlüsselte Übertragung der Login-Informationen über die URL hat jeder der die Datei ```config.js``` in die Finger bekommt Zugriff auf **dein** CampusOffice.
+ACHTUNG! Auch wenn eine Serverseitige Configurationsdatei sicherer ist, als eine unverschlüsselte Übertragung der Login-Informationen über die URL hat jeder der die Datei config.js in die Finger bekommt Zugriff auf dein CampusOffice.
 Du handelst auf deine eigene Verantwortung!
 </aside>
 
