@@ -12,8 +12,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "moment": "^2.8.3",
-    "request": "^2.45.0",
+    "moment": "^2.18.1",
+    "request": "^2.81.0",
     "tough-cookie": "^0.12.1"
   }
 }
